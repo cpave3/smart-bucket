@@ -1,0 +1,46 @@
+esphome:
+  name: smart-bucket
+
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  password: ""
+
+wifi:
+  ssid: "Egglpant Juice"
+  password: "inawineglass"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Smart-Bucket Fallback Hotspot"
+    password: "9pPzOXlkQcBz"
+
+captive_portal:
+
+# Example configuration entry
+dallas:
+  - pin: 15
+
+# Individual sensors
+sensor:
+  - platform: dallas
+    index: 0
+    name: "Water Temperature"
+
+  - platform: pulse_counter
+    name: "Flow rate"
+    pin: 2
+    update_interval: 60s
+    filters:
+      - lambda: return (x / 450); #5880 pulse per L for small sensor, 450 for bigger sensor
+    unit_of_measurement: "L/min"
